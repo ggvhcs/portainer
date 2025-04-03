@@ -2,6 +2,7 @@
 
 --- official web site address ---
 https://hub.docker.com/r/portainer/portainer
+https://hub.docker.com/r/portainer/portainer-ce
 https://docs.portainer.io/start/install-ce/server/docker/linux
 
 --- github repo ---
@@ -54,5 +55,27 @@ pass --> blabla2025**
 
 --- running again. ---
 $ sudo docker start portainer
+
+# Auto Start Containers after System Reboot.
+
+sudo nano /etc/systemd/system/portainer.service
+
+---
+[Unit]
+Description=Start Containers
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start portainer
+ExecStop=/usr/bin/docker stop portainer
+
+[Install]
+WantedBy=default.target
+---
+
+sudo systemctl enable portainer.service
+sudo systemctl disable portainer.service
 
 # --- *** portainer docker admin in Linux Mint 21 running OK. *** --- #
